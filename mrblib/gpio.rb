@@ -102,7 +102,7 @@ module ESP32
     
       def mode= mode
         #puts "TEST PIN MODE"
-        STAND.pin_mode pin, mode
+        STANDARD.pin_mode pin, mode
       end
     
       alias :digital_write :write   
