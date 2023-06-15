@@ -1,4 +1,4 @@
-MRuby::Gem::Specification.new('mruby-esp32-standard-gpio') do |spec|
+MRuby::Gem::Specification.new('mruby-standard-gpio') do |spec|
   spec.license = 'MIT'
   spec.authors = 'SHattapat'
 
