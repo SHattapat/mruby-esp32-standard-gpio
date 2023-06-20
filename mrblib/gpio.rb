@@ -50,7 +50,8 @@ module ESP32
         STANDARD.analog_read pin
       end
     
-      def read
+      def read 
+        puts pin
         STANDARD.digital_read pin
       end 
      
@@ -72,7 +73,7 @@ module ESP32
         val
       end 
 
-      def high_at? 
+      def high_at? pin
         puts "test05"
       end
 
