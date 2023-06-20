@@ -87,7 +87,7 @@ mrb_esp32_gpio_digital_read(mrb_state *mrb, mrb_value self) {
   
   //printf(" input level is %d \n",gpio_get_level(mrb_fixnum(pin)));
 
-  return mrb_fixnum_value(gpio_get_level(GPIO_NUM_18));
+  return mrb_fixnum_value(gpio_get_level(mrb_fixnum(pin)));
 }
 
 static mrb_value
