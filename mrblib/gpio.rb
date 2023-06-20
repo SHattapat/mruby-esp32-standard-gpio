@@ -1,7 +1,8 @@
 module ESP32
   module STANDARD
     include Constants
-    puts "TEST........GPIO 06 GIT"
+    puts "TEST........GPIO 07 GIT"
+    
     class << self
      alias :digital_write :digitalWrite   
       alias :digital_read  :digitalRead
