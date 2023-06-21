@@ -23,13 +23,13 @@ module ESP32
       
 
       attr_reader :pin
-      def initialize pin, mode = :input
-      puts "initialize"
-      puts "setmode"
-      puts pin
-      mode = PIN_MODE[mode] unless mode.is_a?(Integer)
-      @pin = pin
-      @mode = mode
+      def initialize #pin, mode = :input
+      #puts "initialize"
+      #puts "setmode"
+      #puts pin
+      #mode = PIN_MODE[mode] unless mode.is_a?(Integer)
+      #@pin = pin
+      #@mode = mode
       #self.mode= mode
     end
 
@@ -74,11 +74,25 @@ module ESP32
       end 
 
       def high_at? pin
-        puts "test05"
+        level = STANDARD.digital_read pin
+        if level == 1
+          val_read = true
+        else 
+          val_read = false
+        end
+        #puts val_read
+        return val_read
       end
 
-      def low_at? 
-        puts "test06"
+      def low_at? pin
+        level = STANDARD.digital_read pin
+        if level == 0
+          val_read = true
+        else 
+          val_read = false
+        end
+        #puts val_read
+        return val_read
       end
       
 
