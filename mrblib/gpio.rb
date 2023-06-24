@@ -23,21 +23,21 @@ module ESP32
       
 
       attr_reader :pin
-      def initialize #pin, mode = :input
-      #puts "initialize"
+      def initialize pin, mode = :input
+      puts "initialize"
       #puts "setmode"
       #puts pin
-      #mode = PIN_MODE[mode] unless mode.is_a?(Integer)
-      #@pin = pin
-      #@mode = mode
+      mode = PIN_MODE[mode] unless mode.is_a?(Integer)
+      @pin = pin
+      @mode = mode
       #self.mode= mode
-    end
+      end
 
-      def setmode pin, mode = :input
+      def setmode mode = :input
         puts "setmode"
-        puts pin
+        #puts pin
         mode = PIN_MODE[mode] unless mode.is_a?(Integer)
-        @pin = pin
+        #@pin = pin
         @mode = mode
         #self.mode= mode
       end
@@ -47,12 +47,14 @@ module ESP32
       end
 
       def read_at pin
-        STANDARD.analog_read pin
+        #STANDARD.analog_read pin
+        STANDARD.digital_read pin
       end
     
       def read 
         puts pin
-        STANDARD.digital_read pin
+        STANDARD.analog_read pin
+        #STANDARD.digital_read pin
       end 
      
       def analog_write val
@@ -60,13 +62,6 @@ module ESP32
       end
     
       def write val
-        puts "TEST digital_write"
-        self.mode= @mode
-        STANDARD.digital_write pin, val
-        val
-      end 
-
-      def digita val
         puts "TEST digital_write"
         self.mode= @mode
         STANDARD.digital_write pin, val
@@ -141,6 +136,23 @@ module ESP32
       def toggle
         write((read==HIGH) ? LOW : HIGH)
         puts "toggle"
+      end
+    end
+
+    class ADC 
+      def initialize pin, mode = :input
+        puts "initialize ADC"
+        #puts "setmode"
+        #puts pin
+        mode = PIN_MODE[mode] unless mode.is_a?(Integer)
+        @pin = pin
+        @mode = mode
+        #self.mode= mode
+      end
+      def test pin, mode
+        puts "TEST"
+        puts pin
+        puts mode
       end
     end
   end
