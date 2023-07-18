@@ -21,8 +21,6 @@ module ESP32
         inout:    ESP32::STANDARD::INPUT_OUTPUT
       }
       #-----------------------class method-----------------------------#
-    
-
       def self.setmode pin,mode = :input
         puts "setmode"
         #puts pin
@@ -30,6 +28,11 @@ module ESP32
         @pin = pin
         @mode = mode
         #self.mode= mode
+      end
+
+      def self.read_at pin
+              #STANDARD.analog_read pin
+              STANDARD.digital_read pin
       end
 
       def self.high_at? pin
@@ -52,11 +55,6 @@ module ESP32
         end
         #puts val_read
         return val_read
-      end
-
-      def self.read_at pin
-        #STANDARD.analog_read pin
-        STANDARD.digital_read pin
       end
 
       def self.write_at pin,val
