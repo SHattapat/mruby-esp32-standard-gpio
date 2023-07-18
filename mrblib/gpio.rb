@@ -20,8 +20,59 @@ module ESP32
         output:   ESP32::STANDARD::OUTPUT,
         inout:    ESP32::STANDARD::INPUT_OUTPUT
       }
-      
+      #-----------------------class method-----------------------------#
+    
 
+      def self.setmode pin,mode = :input
+        puts "setmode"
+        #puts pin
+        mode = PIN_MODE[mode] unless mode.is_a?(Integer)
+        @pin = pin
+        @mode = mode
+        #self.mode= mode
+      end
+
+      def self.high_at? pin
+        level = STANDARD.digital_read pin
+        if level == 1
+          val_read = true
+        else 
+          val_read = false
+        end
+        #puts val_read
+        return val_read
+      end
+
+      def self.low_at? pin
+        level = STANDARD.digital_read pin
+        if level == 0
+          val_read = true
+        else 
+          val_read = false
+        end
+        #puts val_read
+        return val_read
+      end
+
+      def self.read_at pin
+        #STANDARD.analog_read pin
+        STANDARD.digital_read pin
+      end
+
+      def self.write_at pin,val
+        puts "TEST digital_write"
+        if val == 1
+          val_s = HIGH
+        elsif val == 0
+          val_s = LOW
+        end
+        STANDARD.pin_mode pin, @mode
+        STANDARD.digital_write pin, val_s
+        return val
+      end 
+
+     
+      #-----------------------instance method-----------------------------#
       attr_reader :pin
       def initialize pin, mode = :input
       puts "initialize"
@@ -46,7 +97,7 @@ module ESP32
         STANDARD.analog_read pin
       end
 
-      def read_at pin
+      def read_at pin ##########################################
         #STANDARD.analog_read pin
         STANDARD.digital_read pin
       end
@@ -67,29 +118,6 @@ module ESP32
         STANDARD.digital_write pin, val
         val
       end 
-
-      def high_at? pin
-        level = STANDARD.digital_read pin
-        if level == 1
-          val_read = true
-        else 
-          val_read = false
-        end
-        #puts val_read
-        return val_read
-      end
-
-      def low_at? pin
-        level = STANDARD.digital_read pin
-        if level == 0
-          val_read = true
-        else 
-          val_read = false
-        end
-        #puts val_read
-        return val_read
-      end
-      
 
       def high!
         puts "HIGH"
@@ -112,7 +140,7 @@ module ESP32
       end
     
       def mode= mode
-        #puts "TEST PIN MODE"
+        puts "TEST PIN MODE"
         STANDARD.pin_mode pin, mode
       end
     
