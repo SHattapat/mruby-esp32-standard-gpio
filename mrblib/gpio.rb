@@ -185,7 +185,7 @@ module ESP32
           sleep 1
         }
       end
-      ################################################################################
+    ################################################################################
 
       # the following only work if GPIO_MODE_INPUT_OUTPUT ie, Pin.new(io_num, :inout)
       def toggle
@@ -193,7 +193,9 @@ module ESP32
         puts "toggle"
       end
     end
-
+    
+    ################################################################################
+    
     class ADC 
       def initialize pin, mode = :input
         puts "initialize ADC"
@@ -210,8 +212,19 @@ module ESP32
         puts mode
       end
 
-      def analog_read
-        STANDARD.analog_read pin
+      def read
+        STANDARD.analog_read @pin
+      end
+
+      def read_temp
+        for i in 0..100
+          w = STANDARD.analog_read @pin
+          V = w * (3.3 / 4095)
+          T = (V - 0.5) /0.01295
+          T = T.round(2)
+          puts "Temp : #{T}"
+          sleep 1
+        end 
       end
 
       #def read_at pin 
