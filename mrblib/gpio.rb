@@ -1,7 +1,7 @@
 module ESP32
   module STANDARD
     include Constants
-    puts "TEST........GPIO 07 GIT"
+    puts "TEST........GPIO 08 GIT"
     
     class << self
      alias :digital_write :digitalWrite   
@@ -31,8 +31,8 @@ module ESP32
       end
 
       def self.read_at pin
-              #STANDARD.analog_read pin
-              STANDARD.digital_read pin
+        #STANDARD.analog_read pin
+        STANDARD.digital_read pin
       end
 
       def self.high_at? pin
@@ -93,12 +93,12 @@ module ESP32
       end
     
       def read #Returns the read value as 0 or 1.
-        puts pin
-        STANDARD.analog_read pin
-        #STANDARD.digital_read pin
+        #puts pin
+        #STANDARD.analog_read pin
+        STANDARD.digital_read pin
       end
       
-      def high? pin # Returns true if the read value is high level (==1).
+      def high? # Returns true if the read value is high level (==1).
         level = STANDARD.digital_read pin
         if level == 1
           val_read = true
@@ -109,7 +109,7 @@ module ESP32
         return val_read
       end
 
-      def low? pin # Returns true if the read value is low level (==0).
+      def low? # Returns true if the read value is low level (==0).
         level = STANDARD.digital_read pin
         if level == 0
           val_read = true
@@ -120,8 +120,8 @@ module ESP32
         return val_read
       end
 
-      def write_at val # write( integer_data )
-        puts "TEST digital_write"
+      def write val # write( integer_data )
+        puts "TEST write"
         if val == 1
           val_s = HIGH
         elsif val == 0
@@ -132,6 +132,7 @@ module ESP32
         STANDARD.digital_write pin, val_s
         return val
       end 
+
       ################################################################################
       def analog_write val
         STANDARD.analog_write pin, val
@@ -185,7 +186,7 @@ module ESP32
         }
       end
       ################################################################################
-      
+
       # the following only work if GPIO_MODE_INPUT_OUTPUT ie, Pin.new(io_num, :inout)
       def toggle
         write((read==HIGH) ? LOW : HIGH)
