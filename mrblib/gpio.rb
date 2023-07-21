@@ -72,6 +72,7 @@ module ESP32
      
       #-----------------------instance method-----------------------------#
       attr_reader :pin
+
       def initialize pin, mode = :input
       puts "initialize"
       #puts "setmode"
@@ -82,7 +83,7 @@ module ESP32
       #self.mode= mode
       end
 
-      def setmode mode = :input
+      def setmode mode = :input # setmode( param ) -> Nil
         puts "setmode"
         #puts pin
         mode = PIN_MODE[mode] unless mode.is_a?(Integer)
@@ -90,22 +91,48 @@ module ESP32
         @mode = mode
         #self.mode= mode
       end
-
-      def analog_read
-        STANDARD.analog_read pin
-      end
-
-      def read_at pin ##########################################
-        #STANDARD.analog_read pin
-        STANDARD.digital_read pin
-      end
     
-      def read 
+      def read #Returns the read value as 0 or 1.
         puts pin
         STANDARD.analog_read pin
         #STANDARD.digital_read pin
+      end
+      
+      def high? pin # Returns true if the read value is high level (==1).
+        level = STANDARD.digital_read pin
+        if level == 1
+          val_read = true
+        else 
+          val_read = false
+        end
+        #puts val_read
+        return val_read
+      end
+
+      def low? pin # Returns true if the read value is low level (==0).
+        level = STANDARD.digital_read pin
+        if level == 0
+          val_read = true
+        else 
+          val_read = false
+        end
+        #puts val_read
+        return val_read
+      end
+
+      def write_at val # write( integer_data )
+        puts "TEST digital_write"
+        if val == 1
+          val_s = HIGH
+        elsif val == 0
+          val_s = LOW
+        end
+
+        self.mode= @mode
+        STANDARD.digital_write pin, val_s
+        return val
       end 
-     
+      ################################################################################
       def analog_write val
         STANDARD.analog_write pin, val
       end
@@ -157,7 +184,8 @@ module ESP32
           sleep 1
         }
       end
-    
+      ################################################################################
+      
       # the following only work if GPIO_MODE_INPUT_OUTPUT ie, Pin.new(io_num, :inout)
       def toggle
         write((read==HIGH) ? LOW : HIGH)
@@ -180,6 +208,16 @@ module ESP32
         puts pin
         puts mode
       end
+
+      def analog_read
+        STANDARD.analog_read pin
+      end
+
+      #def read_at pin 
+        #STANDARD.analog_read pin
+        #STANDARD.digital_read pin
+      #end
+
     end
   end
 end
