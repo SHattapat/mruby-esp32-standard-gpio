@@ -225,7 +225,7 @@ module ESP32
       end
 
       def read_temp
-        for i in 0..50
+        for i in 0..20
           w = STANDARD.analog_read @pin
           V = w * (3.3 / 4095)
           T = (V - 0.5) /0.01295
