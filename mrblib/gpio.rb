@@ -198,6 +198,13 @@ module ESP32
     
     class ADC
       #-----------------------class method-----------------------------# 
+      def self.read_at pin
+        puts "class method"
+        @pin = pin
+        STANDARD.analog_read pin
+      end
+      
+      #-----------------------instance method-----------------------------#
       def initialize pin, mode = :input
         puts "initialize ADC"
         #puts "setmode"
@@ -227,8 +234,8 @@ module ESP32
           sleep 1
         end 
       end
-
-      #-----------------------instance method-----------------------------#
+      ##################################################################
+      
 
       #def read_at pin 
         #STANDARD.analog_read pin
