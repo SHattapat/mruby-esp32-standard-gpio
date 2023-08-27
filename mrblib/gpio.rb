@@ -222,7 +222,8 @@ module ESP32
         puts "TEST"
         puts pin
         puts mode
-        puts "TEST"
+        puts "TEST Git2"
+        puts "Test GIT2"
       end
 
       def read
@@ -244,7 +245,7 @@ module ESP32
           sleep 1
         end 
       end
-      ##################################################################
+      ################################################################## test2
       
 
       #def read_at pin 
