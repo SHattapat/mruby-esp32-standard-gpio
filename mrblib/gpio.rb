@@ -222,6 +222,7 @@ module ESP32
         puts "TEST"
         puts pin
         puts mode
+        puts "TEST"
       end
 
       def read
