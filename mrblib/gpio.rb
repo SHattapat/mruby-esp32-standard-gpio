@@ -222,8 +222,6 @@ module ESP32
         puts "TEST"
         puts pin
         puts mode
-        puts "TEST Git2"
-        puts "Test GIT2"
       end
 
       def read
