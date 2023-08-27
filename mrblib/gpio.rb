@@ -202,7 +202,10 @@ module ESP32
         #puts "class method"
         @pin = pin
         #return V
-        STANDARD.analog_read pin
+        #STANDARD.analog_read pin
+        w = STANDARD.analog_read @pin
+        V = w * (3.3 / 4095) # Bits of the ADC is 12
+        return V
       end
       
       #-----------------------instance method-----------------------------#
@@ -223,14 +226,17 @@ module ESP32
 
       def read
         #return V
-        STANDARD.analog_read @pin
+        #STANDARD.analog_read @pin
+        w = STANDARD.analog_read @pin
+        V = w * (3.3 / 4095) # Bits of the ADC is 12
+        return V
       end
 
       def read_temp
         for i in 0..20
           w = STANDARD.analog_read @pin
           V = w * (3.3 / 4095) # Bits of the ADC is 12
-          puts "Volt : #{V}"
+          #puts "Volt : #{V}"
           T = (V - 0.5) /0.01295 # Temperature Coefficient mV/°C
           T = T.round(2)
           puts "Temp : #{T}"
