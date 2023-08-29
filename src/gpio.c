@@ -15,6 +15,34 @@
 #define GPIO_MODE_INPUT_OUTPUT ((GPIO_MODE_DEF_INPUT)|(GPIO_MODE_DEF_OUTPUT))
 
 static mrb_value
+mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
+  char buf[100], *dir_str;
+  mrb_value pin, dir;
+  mrb_get_args(mrb, "oo", &pin, &dir);
+  /*
+  if (!mrb_fixnum_p(pin) || !mrb_fixnum_p(dir)) {
+    return mrb_nil_value();
+  }
+  */
+  if( mrb_fixnum(dir) == 1 ){  // output
+    dir_str = "output";
+  }
+  else if(mrb_fixnum(dir) ==2 )
+  {
+    dir_str = "MIN";
+  }
+  
+  else {  // input
+    dir_str = "input";
+  }
+  
+  printf("set %s to port %d \n", dir_str, mrb_fixnum(pin));  
+
+
+  return self;
+}
+
+static mrb_value
 mrb_esp32_gpio_pin_mode(mrb_state *mrb, mrb_value self) {
   mrb_value pin, dir;
   mrb_get_args(mrb, "oo", &pin, &dir);
@@ -113,6 +141,7 @@ mrb_mruby_standard_gpio_gem_init(mrb_state* mrb)
   esp32 = mrb_define_module(mrb, "ESP32");
 
   standard = mrb_define_module_under(mrb, esp32, "STANDARD"); // Module
+  mrb_define_module_function(mrb, standard, "pwm", mrb_esp32_pwm, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, standard, "pinMode", mrb_esp32_gpio_pin_mode, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, standard, "digitalWrite", mrb_esp32_gpio_digital_write, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, standard, "digitalRead", mrb_esp32_gpio_digital_read, MRB_ARGS_REQ(1));
@@ -182,6 +211,8 @@ mrb_mruby_standard_gpio_gem_init(mrb_state* mrb)
 
   mrb_define_const(mrb, constants, "LOW", mrb_fixnum_value(0));
   mrb_define_const(mrb, constants, "HIGH", mrb_fixnum_value(1));
+  mrb_define_const(mrb, constants, "MINPUT", mrb_fixnum_value(2));
+
 
   mrb_define_const(mrb, constants, "INPUT",          mrb_fixnum_value(GPIO_MODE_INPUT));
   mrb_define_const(mrb, constants, "INPUT_OUTPUT",   mrb_fixnum_value(GPIO_MODE_INPUT_OUTPUT));
