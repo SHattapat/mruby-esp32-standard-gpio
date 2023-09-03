@@ -244,13 +244,21 @@ module ESP32
         end 
       end
       ################################################################## test2
-      
-
       #def read_at pin 
         #STANDARD.analog_read pin
         #STANDARD.digital_read pin
       #end
+    end
 
+    class PWM
+      def initialize pin, duty
+        puts "initialize PWM"
+        #puts "setmode"
+        puts pin
+        puts duty
+        STANDARD.pwm pin,duty 
+        #self.mode= mode
+      end
     end
   end
 end
