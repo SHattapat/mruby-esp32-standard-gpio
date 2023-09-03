@@ -2,6 +2,7 @@ module ESP32
   module STANDARD
     include Constants
     puts "TEST........GPIO 08 GIT"
+    puts "TEST........PWM  01 GIT"
     
     class << self
      alias :digital_write :digitalWrite   
@@ -256,7 +257,7 @@ module ESP32
         #puts "setmode"
         puts pin
         puts duty
-        STANDARD.pwm pin,duty 
+        #STANDARD.pwm pin,duty 
         #self.mode= mode
       end
     end
