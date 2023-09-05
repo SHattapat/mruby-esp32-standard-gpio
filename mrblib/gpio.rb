@@ -2,7 +2,7 @@ module ESP32
   module STANDARD
     include Constants
     puts "TEST........GPIO 08 GIT"
-    puts "TEST........PWM  01 GIT"
+    puts "TEST........PWM  02 GIT"
     
     class << self
      alias :digital_write :digitalWrite   
@@ -255,10 +255,37 @@ module ESP32
       def initialize chan,pin,freq,duty
         puts "initialize PWM"
         #puts "setmode"
-        puts pin
-        puts duty
+        @chan = chan
+        @pin = pin
+        @freq = freq
+        @duty = duty
         STANDARD.pwm chan,pin,freq,duty
         #self.mode= mode
+      end
+      def frequency freq
+       puts "TEST Freq"
+      end
+
+      def frequency freq_n
+        #puts @chan
+        #puts @pin
+        #puts freq_n
+        #puts @duty
+        @freq = freq_n
+        STANDARD.pwm @chan,@pin,@freq,@duty
+      end
+
+      def period_us mc
+        #out = (1/mc)*(10**6)
+        #puts out
+        i = (1/mc.to_f)*(10**6.to_f)
+        i = i.round
+        puts i
+      end
+
+      def duty duty_n
+        @duty = duty_n
+        STANDARD.pwm @chan,@pin,@freq,@duty
       end
     end
   end
