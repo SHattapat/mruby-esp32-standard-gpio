@@ -22,7 +22,8 @@
 #define GPIO_MODE_INPUT_OUTPUT ((GPIO_MODE_DEF_INPUT)|(GPIO_MODE_DEF_OUTPUT))
 
 #define LEDC_TIMER              LEDC_TIMER_0
-#define LEDC_MODE               LEDC_LOW_SPEED_MODE
+#define LEDC_MODE               LEDC_HIGH_SPEED_MODE
+#define LEDC_MODE2              LEDC_LOW_SPEED_MODE
 #define LEDC_OUTPUT_IO          (18) // Define the output GPIO
 //#define LEDC_CHANNEL            LEDC_CHANNEL_7
 #define LEDC_DUTY_RES           LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
@@ -31,13 +32,14 @@
 
 static mrb_value
 mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
-  mrb_value pin,duty,chan;
-  mrb_get_args(mrb, "ooo",&chan,&pin, &duty);
+  mrb_value pin,duty,chan,freq;
+  mrb_get_args(mrb, "oooo",&chan,&pin,&freq, &duty);
   /*
   if (!mrb_fixnum_p(pin) || !mrb_fixnum_p(dir)) {
     return mrb_nil_value();
   }
   */
+  
 
   char buf[100], *dir_str;
   ledc_channel_t LEDC_CHANNEL;
@@ -51,7 +53,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
         .speed_mode       = LEDC_MODE, // LEDC_LOW_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-        .freq_hz          = LEDC_FREQUENCY,  // Set output frequency at 5 kHz
+        .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
     };
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
@@ -74,6 +76,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Update duty to apply the new value
     ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    printf("chan = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   else if( mrb_fixnum(chan) == 1 )
   {
@@ -81,18 +84,18 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     ledc_channel_t LEDC_CHANNEL = LEDC_CHANNEL_1;
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Prepare and then apply the LEDC PWM timer configuration
-    ledc_timer_config_t ledc_timer = {
-        .speed_mode       = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+    ledc_timer_config_t ledc_timer1 = {
+        .speed_mode       = LEDC_MODE2, // LEDC_LOW_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-        .freq_hz          = LEDC_FREQUENCY,  // Set output frequency at 5 kHz
+        .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
     };
-    ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
+    ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer1));
 
     // Prepare and then apply the LEDC PWM channel configuration
     ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode     = LEDC_MODE2, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
@@ -104,10 +107,11 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, mrb_fixnum(duty)));
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE2, LEDC_CHANNEL, mrb_fixnum(duty)));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE2, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    printf("chan = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   else if( mrb_fixnum(chan) == 2 )
   {
@@ -318,9 +322,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     dir_str = "input";
   }
   
-  printf("chan = %d \n",mrb_fixnum(chan));
-  sprintf(buf, "set %s\n", dir_str);  
-  puts(buf);
+  
   
   /*
   if( mrb_fixnum(dir) == 1 ){  // output

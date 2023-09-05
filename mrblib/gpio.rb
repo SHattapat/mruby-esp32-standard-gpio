@@ -252,12 +252,12 @@ module ESP32
     end
 
     class PWM
-      def initialize pin, duty
+      def initialize chan,pin,freq,duty
         puts "initialize PWM"
         #puts "setmode"
         puts pin
         puts duty
-        #STANDARD.pwm pin,duty 
+        STANDARD.pwm chan,pin,freq,duty
         #self.mode= mode
       end
     end
