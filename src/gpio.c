@@ -76,7 +76,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Update duty to apply the new value
     ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    printf("chan = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
+    printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   else if( mrb_fixnum(chan) == 1 )
   {
@@ -111,7 +111,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Update duty to apply the new value
     ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE2, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    printf("chan = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
+    printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   else if( mrb_fixnum(chan) == 2 )
   {
