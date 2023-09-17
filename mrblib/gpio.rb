@@ -252,16 +252,17 @@ module ESP32
     end
 
     class PWM
-      def initialize(chan,pin,frequency:,duty:)
+      def initialize chan,pin
         puts "initialize PWM"
         #puts "setmode"
+        duty = 0
         duty= ((2**13)-1)*duty/100.to_f
         duty = duty.round
 
         @chan = chan
         @pin = pin
-        @freq = frequency
-        @duty = duty
+        @freq = 50 # Frequency in Hertz. Set frequency at 50 Hz
+        @duty = duty #Set duty cycle at 0%
         STANDARD.pwm @chan,@pin,@freq,@duty
         #self.mode= mode
       end
@@ -283,7 +284,9 @@ module ESP32
         #puts out
         i = (1/mc.to_f)*(10**6.to_f)
         i = i.round
-        puts i
+        #puts i
+        @freq = i
+        STANDARD.pwm @chan,@pin,@freq,@duty
       end
 
       def duty duty_n
