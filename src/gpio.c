@@ -12,6 +12,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
+//GPIO // ADC
 #define GPIO_MODE_DEF_PULLUP (BIT3)
 #define GPIO_MODE_DEF_PULLDOWN (BIT3)
 #define GPIO_MODE_INPUT_PULLUP ((GPIO_MODE_INPUT)|(GPIO_MODE_DEF_PULLUP))
@@ -21,9 +22,10 @@
 #define GPIO_MODE_INPUT_OUTPUT_OD ((GPIO_MODE_DEF_INPUT)|(GPIO_MODE_DEF_OUTPUT)|(GPIO_MODE_DEF_OD))
 #define GPIO_MODE_INPUT_OUTPUT ((GPIO_MODE_DEF_INPUT)|(GPIO_MODE_DEF_OUTPUT))
 
+// PWM
 #define LEDC_TIMER              LEDC_TIMER_0
-#define LEDC_MODE               LEDC_HIGH_SPEED_MODE
-#define LEDC_MODE2              LEDC_LOW_SPEED_MODE
+#define LEDC_MODE_1               LEDC_HIGH_SPEED_MODE
+#define LEDC_MODE_2              LEDC_LOW_SPEED_MODE
 #define LEDC_OUTPUT_IO          (18) // Define the output GPIO
 //#define LEDC_CHANNEL            LEDC_CHANNEL_7
 #define LEDC_DUTY_RES           LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
@@ -50,7 +52,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
-        .speed_mode       = LEDC_MODE, // LEDC_HIGH_SPEED_MODE
+        .speed_mode       = LEDC_MODE_1, // LEDC_HIGH_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency 
@@ -60,7 +62,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
 
     // Prepare and then apply the LEDC PWM channel configuration
     ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE, // LEDC_HIGH_SPEED_MODE
+        .speed_mode     = LEDC_MODE_1, // LEDC_HIGH_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
@@ -72,9 +74,9 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, mrb_fixnum(duty)));
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE_1, LEDC_CHANNEL, mrb_fixnum(duty)));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE_1, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
@@ -85,7 +87,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer1 = {
-        .speed_mode       = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode       = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
@@ -95,7 +97,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
 
     // Prepare and then apply the LEDC PWM channel configuration
     ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode     = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
@@ -107,9 +109,9 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, mrb_fixnum(duty)));
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE_1, LEDC_CHANNEL, mrb_fixnum(duty)));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE_1, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
@@ -120,17 +122,17 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
-        .speed_mode       = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode       = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-        .freq_hz          = LEDC_FREQUENCY,  // Set output frequency at 5 kHz
+        .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
     };
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
 
     // Prepare and then apply the LEDC PWM channel configuration
     ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode     = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
@@ -142,10 +144,11 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, mrb_fixnum(duty)));
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE_1, LEDC_CHANNEL, mrb_fixnum(duty)));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE_1, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   else if( mrb_fixnum(chan) == 3 )
   {
@@ -154,17 +157,17 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
-        .speed_mode       = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode       = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-        .freq_hz          = LEDC_FREQUENCY,  // Set output frequency at 5 kHz
+        .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
     };
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
 
     // Prepare and then apply the LEDC PWM channel configuration
     ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode     = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
@@ -176,10 +179,11 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, mrb_fixnum(duty)));
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE_1, LEDC_CHANNEL, mrb_fixnum(duty)));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE_1, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   else if( mrb_fixnum(chan) == 4 )
   {
@@ -188,17 +192,17 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
-        .speed_mode       = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode       = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-        .freq_hz          = LEDC_FREQUENCY,  // Set output frequency at 5 kHz
+        .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
     };
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
 
     // Prepare and then apply the LEDC PWM channel configuration
     ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode     = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
@@ -210,10 +214,11 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, mrb_fixnum(duty)));
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE_2, LEDC_CHANNEL, mrb_fixnum(duty)));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE_2, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   else if( mrb_fixnum(chan) == 5 )
   {
@@ -222,17 +227,17 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
-        .speed_mode       = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode       = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-        .freq_hz          = LEDC_FREQUENCY,  // Set output frequency at 5 kHz
+        .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
     };
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
 
     // Prepare and then apply the LEDC PWM channel configuration
     ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode     = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
@@ -244,10 +249,11 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, mrb_fixnum(duty)));
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE_2, LEDC_CHANNEL, mrb_fixnum(duty)));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE_2, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   else if( mrb_fixnum(chan) == 6 )
   {
@@ -256,17 +262,17 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
-        .speed_mode       = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode       = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-        .freq_hz          = LEDC_FREQUENCY,  // Set output frequency at 5 kHz
+        .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
     };
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
 
     // Prepare and then apply the LEDC PWM channel configuration
     ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode     = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
@@ -278,10 +284,11 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, mrb_fixnum(duty)));
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE_2, LEDC_CHANNEL, mrb_fixnum(duty)));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE_2, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   else if( mrb_fixnum(chan) == 7 )
   {
@@ -290,17 +297,17 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
-        .speed_mode       = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode       = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-        .freq_hz          = LEDC_FREQUENCY,  // Set output frequency at 5 kHz
+        .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
     };
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
 
     // Prepare and then apply the LEDC PWM channel configuration
     ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE, // LEDC_LOW_SPEED_MODE
+        .speed_mode     = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
@@ -312,14 +319,15 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, mrb_fixnum(duty)));
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE_2, LEDC_CHANNEL, mrb_fixnum(duty)));
     // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE_2, LEDC_CHANNEL));
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    printf("chanel = %d pin = %d freq = %d duty = %d\n",mrb_fixnum(chan),mrb_fixnum(pin),mrb_fixnum(freq),mrb_fixnum(duty));
   }
   
   else {  // input
-    dir_str = "input";
+    printf("Out of Cannel !!! \n");
   }
   
   

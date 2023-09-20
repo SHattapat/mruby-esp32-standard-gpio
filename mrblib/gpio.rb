@@ -1,8 +1,10 @@
 module ESP32
   module STANDARD
     include Constants
-    puts "TEST........GPIO 08 GIT"
-    puts "TEST........PWM  02 GIT"
+    
+    puts "GPIO Version....08 GIT"
+    puts "ADC  Version....04 GIT"
+    puts "PWM  Version....03 GIT"
     
     class << self
      alias :digital_write :digitalWrite   
@@ -13,7 +15,7 @@ module ESP32
     end  
     
     class GPIO
-      puts "Test PIN"
+      #puts "Test PIN"
       PIN_MODE = {
         pullup:   ESP32::STANDARD::INPUT_PULLUP,
         pulldown: ESP32::STANDARD::INPUT_PULLDOWN,
@@ -253,7 +255,7 @@ module ESP32
 
     class PWM
       def initialize chan,pin
-        puts "initialize PWM"
+        #puts "initialize PWM"
         #puts "setmode"
         duty = 0
         duty= ((2**13)-1)*duty/100.to_f
