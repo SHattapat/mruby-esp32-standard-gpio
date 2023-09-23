@@ -23,7 +23,7 @@
 #define GPIO_MODE_INPUT_OUTPUT ((GPIO_MODE_DEF_INPUT)|(GPIO_MODE_DEF_OUTPUT))
 
 // PWM
-#define LEDC_TIMER              LEDC_TIMER_0
+//#define LEDC_TIMER              LEDC_TIMER_0
 #define LEDC_MODE_1               LEDC_HIGH_SPEED_MODE
 #define LEDC_MODE_2              LEDC_LOW_SPEED_MODE
 #define LEDC_OUTPUT_IO          (18) // Define the output GPIO
@@ -53,7 +53,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
         .speed_mode       = LEDC_MODE_1, // LEDC_HIGH_SPEED_MODE
-        .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
+        .timer_num        = LEDC_TIMER_0, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency 
         .clk_cfg          = LEDC_AUTO_CLK
@@ -64,7 +64,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     ledc_channel_config_t ledc_channel = {
         .speed_mode     = LEDC_MODE_1, // LEDC_HIGH_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
-        .timer_sel      = LEDC_TIMER,
+        .timer_sel      = LEDC_TIMER_0,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = mrb_fixnum(pin),
         .duty           = 0, // Set duty to 0%
@@ -88,7 +88,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer1 = {
         .speed_mode       = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
-        .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
+        .timer_num        = LEDC_TIMER_1, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
@@ -99,7 +99,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     ledc_channel_config_t ledc_channel = {
         .speed_mode     = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
-        .timer_sel      = LEDC_TIMER,
+        .timer_sel      = LEDC_TIMER_1,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = mrb_fixnum(pin),
         .duty           = 0, // Set duty to 0%
@@ -123,7 +123,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
         .speed_mode       = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
-        .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
+        .timer_num        = LEDC_TIMER_2, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
@@ -134,7 +134,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     ledc_channel_config_t ledc_channel = {
         .speed_mode     = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
-        .timer_sel      = LEDC_TIMER,
+        .timer_sel      = LEDC_TIMER_2,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = mrb_fixnum(pin),
         .duty           = 0, // Set duty to 0%
@@ -158,7 +158,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
         .speed_mode       = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
-        .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
+        .timer_num        = LEDC_TIMER_3, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
@@ -169,7 +169,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     ledc_channel_config_t ledc_channel = {
         .speed_mode     = LEDC_MODE_1, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
-        .timer_sel      = LEDC_TIMER,
+        .timer_sel      = LEDC_TIMER_3,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = mrb_fixnum(pin),
         .duty           = 0, // Set duty to 0%
@@ -193,7 +193,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
         .speed_mode       = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
-        .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
+        .timer_num        = LEDC_TIMER_0, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
@@ -204,7 +204,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     ledc_channel_config_t ledc_channel = {
         .speed_mode     = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
-        .timer_sel      = LEDC_TIMER,
+        .timer_sel      = LEDC_TIMER_0,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = mrb_fixnum(pin),
         .duty           = 0, // Set duty to 0%
@@ -228,7 +228,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
         .speed_mode       = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
-        .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
+        .timer_num        = LEDC_TIMER_1, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
@@ -239,7 +239,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     ledc_channel_config_t ledc_channel = {
         .speed_mode     = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
-        .timer_sel      = LEDC_TIMER,
+        .timer_sel      = LEDC_TIMER_1,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = mrb_fixnum(pin),
         .duty           = 0, // Set duty to 0%
@@ -263,7 +263,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
         .speed_mode       = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
-        .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
+        .timer_num        = LEDC_TIMER_2, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
@@ -274,7 +274,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     ledc_channel_config_t ledc_channel = {
         .speed_mode     = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
-        .timer_sel      = LEDC_TIMER,
+        .timer_sel      = LEDC_TIMER_2,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = mrb_fixnum(pin),
         .duty           = 0, // Set duty to 0%
@@ -298,7 +298,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
         .speed_mode       = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
-        .timer_num        = LEDC_TIMER, // LEDC_TIMER_0
+        .timer_num        = LEDC_TIMER_3, // LEDC_TIMER_0
         .duty_resolution  = LEDC_DUTY_RES, // LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
         .freq_hz          = mrb_fixnum(freq),  // Set output frequency at 5 kHz
         .clk_cfg          = LEDC_AUTO_CLK
@@ -309,7 +309,7 @@ mrb_esp32_pwm(mrb_state *mrb, mrb_value self) {
     ledc_channel_config_t ledc_channel = {
         .speed_mode     = LEDC_MODE_2, // LEDC_LOW_SPEED_MODE
         .channel        = LEDC_CHANNEL, // LEDC_CHANNEL
-        .timer_sel      = LEDC_TIMER,
+        .timer_sel      = LEDC_TIMER_3,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = mrb_fixnum(pin),
         .duty           = 0, // Set duty to 0%
