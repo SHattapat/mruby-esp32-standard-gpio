@@ -458,12 +458,14 @@ mrb_mruby_standard_gpio_gem_init(mrb_state* mrb)
   mrb_define_module_function(mrb, standard, "digitalRead", mrb_esp32_gpio_digital_read, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, standard, "analogWrite", mrb_esp32_gpio_analog_write, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, standard, "analogRead", mrb_esp32_gpio_analog_read, MRB_ARGS_REQ(1));
+
+  //mrb_define_method(mrb, mrb->kernel_module, "pinMode",  mrb_esp32_gpio_pin_mode,    MRB_ARGS_REQ(1));
   
   adc1_config_width(ADC_WIDTH_BIT_12);//EDIT ADC_WIDTH_MAX ,ADC_BITWIDTH_12
 
   constants = mrb_define_module_under(mrb, standard, "Constants"); // Module
 
-#define define_const(SYM) \
+  #define define_const(SYM) \
   do { \
     mrb_define_const(mrb, constants, #SYM, mrb_fixnum_value(SYM)); \
   } while (0)

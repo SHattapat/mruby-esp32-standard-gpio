@@ -5,9 +5,13 @@ module ESP32
     puts "GPIO Version....08 GIT"
     puts "ADC  Version....04 GIT"
     puts "PWM  Version....03 GIT"
+
+    
+    
+   
     
     class << self
-     alias :digital_write :digitalWrite   
+      alias :digital_write :digitalWrite   
       alias :digital_read  :digitalRead
       alias :analog_write  :analogWrite   
       alias :analog_read   :analogRead    
@@ -24,6 +28,12 @@ module ESP32
         inout:    ESP32::STANDARD::INPUT_OUTPUT
       }
       #-----------------------class method-----------------------------#
+      #STANDARD.pin_mode 18,STANDARD::OUTPUT
+      #STANDARD::digital_write 18,1
+      #sleep 1
+      #STANDARD::digital_write 18,0
+      #sleep 1
+
       def self.setmode pin,mode = :input
         puts "setmode"
         #puts pin
@@ -135,6 +145,19 @@ module ESP32
         STANDARD.digital_write pin, val_s
         return val
       end 
+      ##### test
+      def but
+        puts "test but"
+        x = high?
+        while x == false
+          x = high?
+          puts x
+          sleep 1
+          if x == true
+             break
+           end
+        end
+      end
 
       ################################################################################
       def analog_write val
@@ -167,7 +190,16 @@ module ESP32
       def on
         high!
       end
-    
+
+      def pump_on
+        low!
+      end
+
+      def pump_off
+        high!
+      end
+      
+  
       def mode= mode
         puts "TEST PIN MODE"
         STANDARD.pin_mode pin, mode
@@ -203,11 +235,46 @@ module ESP32
       #-----------------------class method-----------------------------# 
       def self.read_at pin
         #puts "class method"
-        @pin = pin
+        pin = pin
         #return V
         #STANDARD.analog_read pin
-        w = STANDARD.analog_read @pin
+        w = STANDARD.analog_read pin
         V = w * (3.3 / 4095) # Bits of the ADC is 12
+        return V
+      end
+
+      def self.read_temp pin # ADC 6 
+        pin = pin
+        w = STANDARD.analog_read pin
+        V = w * (3.3 / 4095) # Bits of the ADC is 12
+        #puts "Volt : #{V}"
+        T = (V - 0.5) /0.01195 # Temperature Coefficient mV/°C old -> 0.01295
+        T = T.round(2)
+        #puts "Temp : #{T}"
+        return T
+      end
+
+      def self.sun_check pin # ADC 7
+        pin = pin
+        s = STANDARD.analog_read pin
+        V = s * (3.3 / 4095) # Bits of the ADC is 12
+        #puts "Sun_Volt : #{V}"
+        return V
+      end
+
+      def self.soil_R pin # ADC 5
+        pin = pin
+        r = STANDARD.analog_read pin
+        V = r * (3.3 / 4095) # Bits of the ADC is 12
+        #puts "soil_R_Volt : #{V}"
+        return V
+      end
+
+      def self.soil_L pin # ADC 4
+        pin = pin
+        l = STANDARD.analog_read pin
+        V = l * (3.3 / 4095) # Bits of the ADC is 12
+        #puts "soil_L_Volt : #{V}"
         return V
       end
       
@@ -235,17 +302,27 @@ module ESP32
         return V
       end
 
-      def read_temp
+      def observe_temp
         for i in 0..20
           w = STANDARD.analog_read @pin
           V = w * (3.3 / 4095) # Bits of the ADC is 12
           #puts "Volt : #{V}"
-          T = (V - 0.5) /0.01295 # Temperature Coefficient mV/°C
+          T = (V - 0.5) /0.01195 # Temperature Coefficient mV/°C old -> 0.01295
           T = T.round(2)
           puts "Temp : #{T}"
           sleep 1
         end 
       end
+
+      def temp
+        w = STANDARD.analog_read @pin
+        V = w * (3.3 / 4095) # Bits of the ADC is 12
+        #puts "Volt : #{V}"
+        T = (V - 0.5) /0.01195 # Temperature Coefficient mV/°C
+        T = T.round(2)
+        puts "Temp : #{T}"  
+      end
+
       ################################################################## test2
       #def read_at pin 
         #STANDARD.analog_read pin
