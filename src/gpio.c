@@ -452,6 +452,7 @@ mrb_mruby_standard_gpio_gem_init(mrb_state* mrb)
   esp32 = mrb_define_module(mrb, "ESP32");
 
   standard = mrb_define_module_under(mrb, esp32, "STANDARD"); // Module
+  
   mrb_define_module_function(mrb, standard, "pwm", mrb_esp32_pwm, MRB_ARGS_REQ(3));
   mrb_define_module_function(mrb, standard, "pinMode", mrb_esp32_gpio_pin_mode, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, standard, "digitalWrite", mrb_esp32_gpio_digital_write, MRB_ARGS_REQ(2));

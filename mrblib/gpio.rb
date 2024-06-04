@@ -158,6 +158,7 @@ module ESP32
            end
         end
       end
+    
 
       ################################################################################
       def analog_write val
@@ -248,7 +249,7 @@ module ESP32
         w = STANDARD.analog_read pin
         V = w * (3.3 / 4095) # Bits of the ADC is 12
         #puts "Volt : #{V}"
-        T = (V - 0.5) /0.01195 # Temperature Coefficient mV/°C old -> 0.01295
+        T = (V - 0.5) /0.0195 # Temperature Coefficient mV/°C old -> 0.01295
         T = T.round(2)
         #puts "Temp : #{T}"
         return T
